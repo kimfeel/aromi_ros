@@ -1,49 +1,45 @@
-###     aromi_ros     ###
+### aromi_ros
 -------------------------
 aromi_ros is a ROS package for RICAL quadrotors.
 
 
-## Install ROS ##
+## Install ROS
 Ros installation [tutorials](http://wiki.ros.org/kinetic/Installation/Ubuntu)
 
 
-## Catkin workspace ##
+## Catkin workspace
 http://wiki.ros.org/catkin/Tutorials/create_a_workspace
 
 
-## Intel RealSense ##
+## Intel RealSense
 ```
 # Update system
 sudo apt update			
 sudo apt upgrade -y		
+
 # Install dependencies
 sudo apt-get install ros-kinetic-ddynamic_reconfigure
 sudo apt install xorg-dev libglu1-mesa-dev
 sudo apt install git libssl-dev libusb-1.0-0-dev pkg-config -y		
 sudo apt install cmake python3-dev 
-```
+
 # Clone the repository under home
-```
 cd ~
 git clone https://github.com/IntelRealSense/librealsense.git
 cd librealsense
-```
+
 # Install udev rules
-```
 sudo cp config/99-realsense-libusb.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules && udevadm trigger
-```
+
 # Create the destination directory
-```
 mkdir build && cd build
-```
+
 # Remove extra files if this is not your first run
-```
 xarg sudo rm < install_manifest.txt
 rm CMakeCache.txt
-```
+
 # Compile librealsense
-```
 export CC=/usr/bin/gcc-7
 export CXX=/usr/bin/g++-7
 cmake -D CMAKE_BUILD_TYPE="Release"\
@@ -54,9 +50,8 @@ make -j4
 sudo make install
 sudo ldconfig
 sudo reboot
-```
+
 # clone realsense-ros repository and compile it.
-```
 cd catkin_ws/src
 git clone https://github.com/IntelRealSense/realsense-ros.git
 cd realsense-ros/
@@ -67,9 +62,8 @@ cd ..
 catkin_make clean
 catkin_make -DCATKIN_ENABLE_TESTING=False -DCMAKE_BUILD_TYPE=Release
 catkin_make install
-```
+
 #  try to test camera node in ROS.
-```
 roslaunch realsense2_camera rs_camera.launch
 ```
 
