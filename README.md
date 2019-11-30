@@ -12,13 +12,11 @@ http://wiki.ros.org/catkin/Tutorials/create_a_workspace
 
 
 ## Intel RealSense ##
-# Update system
 ```
+# Update system
 sudo apt update			
 sudo apt upgrade -y		
-```
 # Install dependencies
-```
 sudo apt-get install ros-kinetic-ddynamic_reconfigure
 sudo apt install xorg-dev libglu1-mesa-dev
 sudo apt install git libssl-dev libusb-1.0-0-dev pkg-config -y		
