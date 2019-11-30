@@ -2,7 +2,8 @@
 -------------------------
 aromi_ros is a ROS package for RICAL quadrotors. 
 It is tested on both Ubuntu 16.04 with ROS kinetic and Ubuntu 18.04 with ROS melodic.
-<Reference> 
+
+## Reference 
 1. http://dev.px4.io/v1.9.0/en/setup/dev_env_linux_ubuntu.html
 2. https://github.com/PX4/avoidance
 3. https://github.com/IntelRealSense/realsense-ros
