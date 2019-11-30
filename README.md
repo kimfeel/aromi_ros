@@ -220,11 +220,11 @@ rosrun mavros mavsys mode -c OFFBOARD
 rosrun mavros mavsafety arm
 ```
 
-### Then the drone will start moving towards the goal. The default x, y goal position can be changed in Rviz by clicking on the 2D Nav Goal button and then choosing the new goal x and y position by clicking on the visualized gray space. If the goal has been set correctly, a yellow sphere will appear where you have clicked in the grey world. 
+#### Then the drone will start moving towards the goal. The default x, y goal position can be changed in Rviz by clicking on the 2D Nav Goal button and then choosing the new goal x and y position by clicking on the visualized gray space. If the goal has been set correctly, a yellow sphere will appear where you have clicked in the grey world. 
 
-### One can plan a new path by setting a new goal with the 2D Nav Goal button in rviz. The planned path should show up in rviz and the drone should follow the path, updating it when obstacles are detected. It is also possible to set a goal without using the obstacle avoidance (i.e. the drone will go straight to this goal and potentially collide with obstacles). To do so, set the position with the 2D Pose Estimate button in rviz.
+#### One can plan a new path by setting a new goal with the 2D Nav Goal button in rviz. The planned path should show up in rviz and the drone should follow the path, updating it when obstacles are detected. It is also possible to set a goal without using the obstacle avoidance (i.e. the drone will go straight to this goal and potentially collide with obstacles). To do so, set the position with the 2D Pose Estimate button in rviz.
 
-### You will see an unarmed vehicle on the ground. Open QGroundControl, either plan a mission with the last item of type Land or fly around the world in Position Control, click the Land button on the left side where you wish to land. At the land position, the vehicle will start to descend towards the ground until it is at loiter_height from the ground/obstacle. Then it will start loitering to evaluate the ground underneeth. If the ground is flat, the vehicle will continue landing. Otherwise it will evaluate the close by terrain in a squared spiral pattern until it finds a good enough ground to land on.
+#### You will see an unarmed vehicle on the ground. Open QGroundControl, either plan a mission with the last item of type Land or fly around the world in Position Control, click the Land button on the left side where you wish to land. At the land position, the vehicle will start to descend towards the ground until it is at loiter_height from the ground/obstacle. Then it will start loitering to evaluate the ground underneeth. If the ground is flat, the vehicle will continue landing. Otherwise it will evaluate the close by terrain in a squared spiral pattern until it finds a good enough ground to land on.
 
 
 ## Install and build aromi_ros
