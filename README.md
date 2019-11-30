@@ -2,6 +2,63 @@
 -------------------------
 aromi_ros is a ROS package for RICAL quadrotors. 
 It is tested on both Ubuntu 16.04 with ROS kinetic and Ubuntu 18.04 with ROS melodic.
+<Reference> 
+1. http://dev.px4.io/v1.9.0/en/setup/dev_env_linux_ubuntu.html
+2. https://github.com/PX4/avoidance
+3. https://github.com/IntelRealSense/realsense-ros
+4. http://kimfeel82.egloos.com/
+5. https://github.com/PX4/Firmware/issues/11008
+6. https://github.com/PX4/Firmware/issues/13117
+7. https://github.com/PX4/avoidance/issues/393
+8. https://ai-mrkogao.github.io/ros/ROSpixhawk/
+9. https://404warehouse.net/2016/07/11/px4-software-in-the-loopsitl-simulation-on-gazebo/
+10. https://404warehouse.net/2015/12/20/autopilot-offboard-control-using-mavros-package-on-ros/    
+11. http://www.modulabs.co.kr/index.php?mid=board_GDCH80&page=2&document_srl=1886
+12. https://akshayk07.weebly.com/offboard-control-of-pixhawk.html
+13. https://dev.px4.io/en/ros/mavros_offboard.html
+14. https://blog.naver.com/bae3421_/221196584630
+15. https://blog.naver.com/evnngsky/221556876997
+16. https://rogerdudler.github.io/git-guide/index.ko.html
+    
+
+## how to use github
+```
+# create a repository, create a folder and run the following command
+git init
+
+# clone a repository
+git clone http://github.com/xxx/xxxx.git
+
+# add and commit
+git add <file name>
+git add *
+git commit -m "comments"
+
+# push
+git remote add origin http://github.com/xxx/xxxx.git
+git push origin master
+
+# create a new branch "feature_x"
+git checkout -b feature_x
+
+# comback to master branch
+git checkout master
+
+# delete a branch
+git branch -d feature_x
+
+# push a branch
+git push origin feature_x
+
+# update the local repository following by a remote repository (fetch and merge)
+git pull
+
+# update the current remote repository following by a feature_x branch
+git merge feature_x
+
+# compare difference between two branch
+git diff master(current) feature_x
+```
 
 
 ## Install ROS
@@ -101,8 +158,11 @@ sudo apt-get install ninja-build -y
 sudo apt-get install ant openjdk-8-jdk openjdk-8-jre -y
 
 # gazebo dependencies
+sudo apt-get install libignition-math2-dev
 sudo apt-get install protobuf-compiler libeigen3-dev libopencv-dev -y
 sudo apt-get install python-wstool python-rosinstall-generator python-catkin-tools -y
+sudo apt-get install ros-kinetic-gazebo-ros-pkgs
+(There is no gazebo version number for ROS kinetic)
 
 # Dependencies for NuttX based hardware (Pixhawk) 
 sudo apt-get install python-serial openocd \
