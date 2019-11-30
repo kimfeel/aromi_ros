@@ -1,4 +1,4 @@
-### aromi_ros
+# aromi_ros
 -------------------------
 aromi_ros is a ROS package for RICAL quadrotors.
 
@@ -168,41 +168,38 @@ git clone https://github.com/PX4/avoidance.git
 catkin_make (catkin_make -DCMAKE_BUILD_TYPE=Release)
 ```
 
-# Simulate a forward looking stereo camera running OpenCV's block matching algorithm
+## Simulate a forward looking stereo camera running OpenCV's block matching algorithm
 roslaunch local_planner local_planner_stereo.launch
 
-# Simulate a forward looking kinect depth sensor
+## Simulate a forward looking kinect depth sensor
 roslaunch local_planner local_planner_depth-camera.launch
 
-# Simulate three kinect depth sensors
+## Simulate three kinect depth sensors
 roslaunch local_planner local_planner_sitl_3cam.launch
 
-# Start the global_planner and use it for avoidance in offboard mode.
+## Start the global_planner and use it for avoidance in offboard mode.
 roslaunch global_planner global_planner_stereo.launch
 
-# From the command line, you can also make Gazebo follow the drone, if you want.
+## From the command line, you can also make Gazebo follow the drone, if you want.
 gz camera --camera-name=gzclient_camera --follow=iris
 
-# Start the safe_landing_planner and use it to land safely in mission or auto land mode. To run the node:
+## Start the safe_landing_planner and use it to land safely in mission or auto land mode. To run the node:
 roslaunch safe_landing_planner safe_landing_planner.launch
 
-# The disparity map from stereo-image-proc is published as a stereo_msgs/DisparityImage message, 
-# which is not supported by rviz or rqt. To visualize the message, either run:
+## The disparity map from stereo-image-proc is published as a stereo_msgs/DisparityImage message, 
+## which is not supported by rviz or rqt. To visualize the message, either run:
 rosrun image_view stereo_view stereo:=/stereo image:=image_rect_color
 
-# or publish the DisparityImage as a simple sensor_msgs/Image
+## or publish the DisparityImage as a simple sensor_msgs/Image
 rosrun topic_tools transform /stereo/disparity /stereo/disparity_image sensor_msgs/Image 'm.image'
 
-# You will see the Iris drone unarmed in the Gazebo world. 
-# To start flying, there are two options: OFFBOARD or MISSION mode. 
-# For OFFBOARD, run: In another terminal
+## You will see the Iris drone unarmed in the Gazebo world. 
+## To start flying, there are two options: OFFBOARD or MISSION mode. 
+## For OFFBOARD, run: In another terminal
 rosrun mavros mavsys mode -c OFFBOARD
 rosrun mavros mavsafety arm
 
-# Then the drone will start moving towards the goal. 
-# The default x, y goal position can be changed in Rviz by clicking on the 2D Nav Goal button 
-# and then choosing the new goal x and y position by clicking on the visualized gray space. 
-# If the goal has been set correctly, a yellow sphere will appear where you have clicked in the grey world. 
+## Then the drone will start moving towards the goal. The default x, y goal position can be changed in Rviz by clicking on the 2D Nav Goal button and then choosing the new goal x and y position by clicking on the visualized gray space. If the goal has been set correctly, a yellow sphere will appear where you have clicked in the grey world. 
 
 # One can plan a new path by setting a new goal with the 2D Nav Goal button in rviz. 
 # The planned path should show up in rviz and the drone should follow the path, updating it when obstacles are detected. 
