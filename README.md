@@ -166,16 +166,10 @@ sudo apt install libpcl1 ros-kinetic-octomap-* ros-kinetic-yaml-*
 cd ~/catkin_ws/src
 git clone https://github.com/PX4/avoidance.git
 catkin_make (catkin_make -DCMAKE_BUILD_TYPE=Release)
+```
 
 # Simulate a forward looking stereo camera running OpenCV's block matching algorithm
 roslaunch local_planner local_planner_stereo.launch
-
-# The disparity map from stereo-image-proc is published as a stereo_msgs/DisparityImage message, 
-# which is not supported by rviz or rqt. To visualize the message, either run:
-rosrun image_view stereo_view stereo:=/stereo image:=image_rect_color
-
-# or publish the DisparityImage as a simple sensor_msgs/Image
-rosrun topic_tools transform /stereo/disparity /stereo/disparity_image sensor_msgs/Image 'm.image'
 
 # Simulate a forward looking kinect depth sensor
 roslaunch local_planner local_planner_depth-camera.launch
@@ -189,6 +183,16 @@ roslaunch global_planner global_planner_stereo.launch
 # From the command line, you can also make Gazebo follow the drone, if you want.
 gz camera --camera-name=gzclient_camera --follow=iris
 
+# Start the safe_landing_planner and use it to land safely in mission or auto land mode. To run the node:
+roslaunch safe_landing_planner safe_landing_planner.launch
+
+# The disparity map from stereo-image-proc is published as a stereo_msgs/DisparityImage message, 
+# which is not supported by rviz or rqt. To visualize the message, either run:
+rosrun image_view stereo_view stereo:=/stereo image:=image_rect_color
+
+# or publish the DisparityImage as a simple sensor_msgs/Image
+rosrun topic_tools transform /stereo/disparity /stereo/disparity_image sensor_msgs/Image 'm.image'
+
 # You will see the Iris drone unarmed in the Gazebo world. 
 # To start flying, there are two options: OFFBOARD or MISSION mode. 
 # For OFFBOARD, run: In another terminal
@@ -196,16 +200,15 @@ rosrun mavros mavsys mode -c OFFBOARD
 rosrun mavros mavsafety arm
 
 # Then the drone will start moving towards the goal. 
-# The default x, y goal position can be changed in Rviz by clicking on the 2D Nav Goal button and then choosing the new goal x and y position by clicking on the visualized gray space. 
+# The default x, y goal position can be changed in Rviz by clicking on the 2D Nav Goal button 
+# and then choosing the new goal x and y position by clicking on the visualized gray space. 
 # If the goal has been set correctly, a yellow sphere will appear where you have clicked in the grey world. 
 
 # One can plan a new path by setting a new goal with the 2D Nav Goal button in rviz. 
 # The planned path should show up in rviz and the drone should follow the path, updating it when obstacles are detected. 
-# It is also possible to set a goal without using the obstacle avoidance (i.e. the drone will go straight to this goal and potentially collide with obstacles). 
+# It is also possible to set a goal without using the obstacle avoidance 
+# (i.e. the drone will go straight to this goal and potentially collide with obstacles). 
 # To do so, set the position with the 2D Pose Estimate button in rviz.
-
-# Start the safe_landing_planner and use it to land safely in mission or auto land mode. To run the node:
-roslaunch safe_landing_planner safe_landing_planner.launch
 
 # You will see an unarmed vehicle on the ground. Open QGroundControl, either plan a mission with the last item of type Land or fly around the world in Position Control, click the Land button on the left side where you wish to land. At the land position, the vehicle will start to descend towards the ground until it is at loiter_height from the ground/obstacle. Then it will start loitering to evaluate the ground underneeth. If the ground is flat, the vehicle will continue landing. Otherwise it will evaluate the close by terrain in a squared spiral pattern until it finds a good enough ground to land on.
 
@@ -219,5 +222,7 @@ catkin_make
 
 
 ## Run on Hardware
+```
 Reference: https://github.com/PX4/avoidance
+```
 
