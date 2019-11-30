@@ -144,10 +144,9 @@ make px4_sitl_default gazebo
 ```
 
 
-## Install MAVROS and PX4 avoidance package
+## Install dependencies, MAVROS and rplidar packages
 ```
 sudo apt install python-catkin-tools
-sudo apt install ros-kinetic-mavros ros-kinetic-mavros-extras
 sudo apt install ros-kinetic-stereo-image-proc
 sudo apt install ros-kinetic-image-view
 sudo apt-get install libgstreamer1.0-*
@@ -162,6 +161,20 @@ sudo ./install_geographiclib_datasets.sh
 # Install avoidance module dependencies (pointcloud library and octomap).
 sudo apt install libpcl1 ros-kinetic-octomap-* ros-kinetic-yaml-*
 
+# Install mavros and rplidar (in the system files)
+sudo apt install ros-kinetic-mavros ros-kinetic-mavros-extras
+sudo apt install ros-kinetic-mavros ros-kinetic-rplidar-ros
+
+# or Download mavros and rplidar (in the catkin_ws)
+cd ~/catkin_ws/src
+git clone https://github.com/mavlink/mavros
+git clone https://github.com/Slamtec/rplidar_ros
+catkin_make 
+```
+
+
+## PX4 avoidance package
+```
 # Clone this repository in your catkin workspace in order to build the avoidance node
 cd ~/catkin_ws/src
 git clone https://github.com/PX4/avoidance.git
@@ -186,16 +199,13 @@ gz camera --camera-name=gzclient_camera --follow=iris
 ### Start the safe_landing_planner and use it to land safely in mission or auto land mode. To run the node:
 roslaunch safe_landing_planner safe_landing_planner.launch
 
-### The disparity map from stereo-image-proc is published as a stereo_msgs/DisparityImage message, 
-### which is not supported by rviz or rqt. To visualize the message, either run:
+### The disparity map from stereo-image-proc is published as a stereo_msgs/DisparityImage message, which is not supported by rviz or rqt. To visualize the message, either run:
 rosrun image_view stereo_view stereo:=/stereo image:=image_rect_color
 
 ### or publish the DisparityImage as a simple sensor_msgs/Image
 rosrun topic_tools transform /stereo/disparity /stereo/disparity_image sensor_msgs/Image 'm.image'
 
-### You will see the Iris drone unarmed in the Gazebo world. 
-### To start flying, there are two options: OFFBOARD or MISSION mode. 
-### For OFFBOARD, run: In another terminal
+### You will see the Iris drone unarmed in the Gazebo world. To start flying, there are two options: OFFBOARD or MISSION mode. For OFFBOARD, run: In another terminal
 rosrun mavros mavsys mode -c OFFBOARD
 rosrun mavros mavsafety arm
 
