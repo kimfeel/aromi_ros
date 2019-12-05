@@ -232,7 +232,13 @@ sudo apt install ros-kinetic-mavros ros-kinetic-rplidar-ros
 cd ~/catkin_ws/src
 git clone https://github.com/mavlink/mavros
 git clone https://github.com/Slamtec/rplidar_ros
+cd ..
 catkin_make 
+
+#If cmake failed with errors, install below
+sudo apt-get install libopenni2-dev
+sudo apt-get install ros-kinetic-control-toolbox
+catkin_make
 ```
 
 
