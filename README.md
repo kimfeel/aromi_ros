@@ -298,6 +298,7 @@ rosrun mavros mavsafety arm
 ```
 cd ~/catkin_ws/src
 git clone https://github.com/kimfeel/aromi_ros.git
+cd ..
 catkin_make
 ```
 
