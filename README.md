@@ -99,8 +99,8 @@ xarg sudo rm < install_manifest.txt
 rm CMakeCache.txt
 
 # Compile librealsense
-export CC=/usr/bin/gcc-7
-export CXX=/usr/bin/g++-7
+export CC=/usr/bin/gcc-5
+export CXX=/usr/bin/g++-5
 cmake -D CMAKE_BUILD_TYPE="Release"\
 -D FORCE_LIBUVC=ON \
 -D BUILD_PYTHON_BINDINGS=ON \
