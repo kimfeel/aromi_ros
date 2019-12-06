@@ -118,7 +118,7 @@ int main(int argc, char **argv)
 	else {
 		printf("Move to 2nd point!\n");
 		pose.pose.position.x = 0;
-	    	pose.pose.position.y = 0.3;
+	    	pose.pose.position.y = 0.4;
 	    	pose.pose.position.z = 0.8;
 
 		//once isTargetPos is true exit the loop
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 	if (theta < 3.14) {
 		theta = count*0.002; // one rotation 79 seconds: 0.114 deg/count
 	    	pose.pose.position.x = 0;
-	    	pose.pose.position.y = 0.3;
+	    	pose.pose.position.y = 0.4;
 	    	pose.pose.position.z = 0.8;
 		pose.pose.orientation.x = 0;
 		pose.pose.orientation.y = 0;
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
 	else {
 		printf("Landing!!\n");
 		pose.pose.position.x = 0;
-	    	pose.pose.position.y = 0.3;
+	    	pose.pose.position.y = 0.4;
 	    	pose.pose.position.z = 0;
 //		if (isTargetPos(pose)) {
 //			if( arming_client.call(disarm_cmd) &&
