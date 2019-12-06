@@ -122,13 +122,15 @@ int main(int argc, char **argv)
 	    	pose.pose.position.z = 0.8;
 
 		//once isTargetPos is true exit the loop
-		if( isTargetPos == true){
-		break;
+		if( isTargetPos(pose) == true){
+			theta = 0;
+			count = 0;
+			break;
 		}
 	}
     }
     
-    ros::Time last_request = ros::Time::now();
+    last_request = ros::Time::now();
 
     while(ros::ok()){
 	if( offboard == 1 &&
@@ -136,7 +138,6 @@ int main(int argc, char **argv)
             printf("%f!!\n",theta);
 	    rotate = 1;		
             last_request = ros::Time::now();
-	    theta =0;
         }
 	if (theta < 3.14) {
 		theta = count*0.002; // one rotation 79 seconds: 0.114 deg/count
@@ -154,7 +155,7 @@ int main(int argc, char **argv)
 	else {
 		printf("Landing!!\n");
 		pose.pose.position.x = 0;
-	    	pose.pose.position.y = 0;
+	    	pose.pose.position.y = 0.3;
 	    	pose.pose.position.z = 0;
 //		if (isTargetPos(pose)) {
 //			if( arming_client.call(disarm_cmd) &&
