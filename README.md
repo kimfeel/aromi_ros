@@ -305,6 +305,12 @@ catkin_make
 
 ## Run on Hardware
 ```
+# Sensor Fusion
+RpLidar, Realsense T265, IMU(Pixhawk)
+
+# Hector SLAM Setup for RpLiDAR
+
+https://hackaday.io/project/7284-oscar-omni-service-cooperative-assistant-robot/log/26164-first-foray-into-ros
 
 ```
 
