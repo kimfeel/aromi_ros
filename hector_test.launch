@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<launch>
+    <!--arg name="frame_id"   default="local_origin" /-->
+    <arg name="frame_id"   default="local_origin" />
+    <arg name="scan_topic" default="laser/scan"/>
+    <arg name="cloud_name" default="scan_cloud"/>
+
+	<include file="$(find rplidar_ros)/launch/rplidar_a3_hor.launch" /> <!-- lidar scan: ttyUSB0 -->
+	<!--include file="$(find realsense2_camera)/launch/rs_camera.launch" /--> <!-- visual odometry (vslam) -->
+		<!--arg name="tf_publish_rate" value="20.0"/>
+	</include-->
+	<include file="$(find mavros)/launch/px4.launch" />
+
+	<include file="$(find hector_mapping)/launch/mapping_default.launch" >
+		<arg name="base_frame" value="base_link"/>
+  		<arg name="odom_frame" value="base_link"/>
+	</include>
+	
+
+    <node pkg="tf" type="static_transform_publisher" name="tf_laser"
+          args="0 0 0 0 0 0 fcu base_link 10"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="tf_static1"
+          args="0 0 0 0 0 0 base_link laser 10"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="tf_static2"
+          args="0 0 0 0 0 0 map local_origin 10"/>
+
+    <node pkg="tf" type="static_transform_publisher" name="tf_static3"
+          args="0 0 0 0 0 0 local_origin map 10"/>
+
+
+    <node pkg="hector_imu_attitude_to_tf" type="imu_attitude_to_tf_node" name="imu_attitude_to_tf_node" output="screen">
+	<remap from="imu_topic" to="/mavros/imu/data" />
+	<param name="base_stabilized_frame" type="string" value="base_stabilized" />
+	<param name="base_frame" type="string" value="base_link" />
+    </node>
+
+    <node pkg="hector_laserscan_to_pointcloud" type="laserscan_to_pointcloud_node" name="scan_to_ptcld" respawn="true">
+    	<param name="min_range" value="0.05" />
+    	<param name="use_high_fidelity_projection" value="false" />
+    	<param name="target_frame" value="pre_spindle" />
+    	<param name="cloud_name" type="string" value="$(arg cloud_name)"/>
+    	<param name="scan_topic" value="$(arg scan_topic)"/>
+    </node>
+
+    <!-- OctoMap Server -->
+<?ignore
+    <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+	<param name="resolution" value="0.05" />
+	<!--param name="frame_id" type="string" value="map" /-->
+        <param name="frame_id" type="string" value="$(arg frame_id)" />
+	<param name="sensor_model/max_range" value="15.0" />
+	<remap from="cloud_in" to="$(arg cloud_name)" />
+	<param name="height_map" value="true" />
+    </node>
+?>
+
+    <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+        <!--param name="resolution" value="1.0" /-->
+        <param name="resolution" value="0.025" />
+        <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+        <param name="frame_id" type="string" value="$(arg frame_id)" />
+        <!-- maximum range to integrate (speedup!) -->
+        <param name="sensor_model/max_range" value="9.0" />
+        <param name="sensor_model/min" value="0.01" />
+        <param name="sensor_model/max" value="0.99" />
+        <param name="sensor_model/hit" value="0.9" />
+        <param name="sensor_model/miss" value="0.45" />
+        <param name="color/r" value="0.1" />
+        <param name="color/g" value="0.1" />
+        <param name="color/b" value="0.1" />
+        <param name="color/a" value="1.0" />
+        <!-- Filter out obstacles which are lower than 1 meter -->
+        <param name="occupancy_min_z" value="1.0" />
+        <param name="height_map" value="true" />
+        <param name="publish_free_space" value="false" />
+        <!-- data source to integrate (PointCloud2) -->
+        <remap from="cloud_in" to="$(arg cloud_name)" />
+	<!--remap from="cloud_in" to="/stereo/points2" /-->
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager"/>
+
+    <node pkg="nodelet" type="nodelet" name="octomap_server_nodelet" args="load octomap_server/OctomapServerNodelet standalone_nodelet">
+                <param name="resolution" value="0.05" />
+
+                <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+                <param name="frame_id" type="string" value="$(arg frame_id)" />
+
+                <!-- maximum range to integrate (speedup!) -->
+                <param name="sensor_model/max_range" value="5.0" />
+
+                <!-- data source to integrate (PointCloud2) -->
+                <remap from="octomap_server_nodelet/cloud_in" to="cloud_in" />
+
+          <!-- output collision map -->
+         <remap from="octomap_server_nodelet/collision_map_out" to="collision_map_out"/>
+
+    </node>
+
+
+
+     <!-- Start GeoTIFF mapper -->
+    <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
+      <arg name="trajectory_publish_rate" value="4"/>
+    </include>
+
+    <node pkg="hector_pose_estimation" type="pose_estimation" name="hector_pose_estimation" />
+
+
+    <node pkg="rosbag" name="rosbag" type="record" output="screen" args="-O /home/minki/rosbag/hector_slam.bag /scan /map /occupied_cells_vis_array /occupied_full /slam_out_pose /mavros/local_position/pose /tf " />
+    <node pkg="rviz" type="rviz" name="rviz" args="-d /home/minki/rviz/rplidar_hector.rviz" />
+
+</launch>
+
+
+

@@ -14,5 +14,5 @@
   <node pkg="aromi_ros" type="aromi_pt_generation" name="pt_generation" output="screen" />	<!-- node for point cloud generation -->
   
   <node pkg="rosbag" name="rosbag" type="record" output="screen" args="-O $(find aromi_ros)/drone_data.bag /scan /mavros/local_position/pose /mavros/vision_pose/pose /tf /mavros/setpoint_position/local" />
-  <!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find aromi_ros)/drone.rviz" /-->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find aromi_ros)/drone.rviz" />
 </launch>

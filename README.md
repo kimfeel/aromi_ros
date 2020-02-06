@@ -199,10 +199,6 @@ nano .bashrc
 # Add
 export QT_X11_NO_MITSHM=1
 export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/Firmware
-(export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:~/px4/Firmware)
-# Setup some more Gazebo-related environment variables (You may need to modify this line based on the location of the Firmware folder on your machine)
-. ~/Firmware/Tools/setup_gazebo.bash ~/Firmware ~/Firmware/build/px4_sitl_default
-(. ~/px4/Firmware/Tools/setup_gazebo.bash ~/px4/Firmware ~/px4/Firmware/build/px4_sitl_default)
 export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:~/catkin_ws/src/avoidance/avoidance/sim/models:~/catkin_ws/src/avoidance/avoidance/sim/worlds
 
 # Build and run simulation
@@ -309,12 +305,6 @@ catkin_make
 
 ## Run on Hardware
 ```
-# Sensor Fusion
-RpLidar, Realsense T265, IMU(Pixhawk)
-
-# Hector SLAM Setup for RpLiDAR
-
-https://hackaday.io/project/7284-oscar-omni-service-cooperative-assistant-robot/log/26164-first-foray-into-ros
 
 ```
 

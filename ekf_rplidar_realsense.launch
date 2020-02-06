@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<launch>
+
+	<include file="$(find rplidar_ros)/launch/rplidar_a3_hor.launch" /> <!-- lidar scan: ttyUSB0 -->
+	<include file="$(find realsense2_camera)/launch/rs_camera.launch" /> <!-- visual odometry (vslam) -->
+		<!--arg name="tf_publish_rate" value="20.0"/>
+	</include-->
+
+	<include file="$(find hector_mapping)/launch/mapping_default.launch" >
+		<arg name="base_frame" value="base_link"/>
+  		<arg name="odom_frame" value="base_link"/>
+		<arg name="map_resolution" value="0.05"/>
+	</include>
+	<include file="$(find mavros)/launch/px4.launch" />
+
+  	<!--test test-name="test_robot_pose_ekf" pkg="robot_pose_ekf" type="test_robot_pose_ekf_zero_covariance" /-->
+	<node pkg="tf" type="static_transform_publisher" name="static1" args="0 0 0 0 0 0 base_link laser 100"/>
+	<!--node pkg="tf" type="static_transform_publisher" name="static1" args="0 0 0 0 0 0 base_footprint laser 100"/-->
+  	<node pkg="tf" type="static_transform_publisher" name="static2" args="-0.10 0.03 0 0 0 0 camera_odom_frame map 100"/>
+	<!--node pkg="tf" type="static_transform_publisher" name="static3" args="0 0 0 0 0 0 local_origin_ned fcu 100"/-->
+  	<node pkg="tf" type="static_transform_publisher" name="static4" args="-0.10 0.03 0 0 0 0 camera_pose_frame local_origin 100"/>
+  	<!--node pkg="tf" type="static_transform_publisher" name="static5" args="0 0 0 0 0 0 local_origin laser 100"/-->
+	<!--node pkg="tf" type="static_transform_publisher" name="static6" args="0 0 0 0 0 0 fcu map 100"/-->
+	<!--node pkg="tf" type="static_transform_publisher" name="static7" args="0 0 0 0 0 0 odom map 100"/-->
+
+  	<node pkg="aromi_ros" type="posestamped_to_odom.py" name="posestamped_to_odom" output="screen" />	<!-- realsense2_camera output is odometry, so it convert odometry to posestamped messages -->
+  	<!--node pkg="aromi_ros" type="odom_to_posestamped.py" name="odom_to_posestamped" output="screen" /-->
+	<node pkg="aromi_ros" type="posewithcovariance_to_posestamped.py" name="posewithcovariance_to_posestamped" output="screen" />
+	<!--node pkg="aromi_ros" type="aromi_pub_setpoints_scan" name="pub_setpoints" output="screen" /-->	<!-- node for publishing setpoint position -->
+  	<!--node pkg="aromi_ros" type="aromi_pt_generation" name="pt_generation" output="screen" /-->		<!-- node for point cloud generation -->
+
+  	<node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf" output="screen" >
+    	  <param name="freq" value="30.0"/>
+	  <!--param name="output_frame" value="odom_combined"/-->
+	  <param name="output_frame" value="map"/>
+  	  <param name="base_footprint_frame" value="base_link"/>
+    	  <param name="sensor_timeout" value="1.0"/>
+    	  <param name="odom_used" value="true"/>
+    	  <param name="imu_used" value="false"/>
+    	  <param name="vo_used" value="true"/>
+    	  <param name="debug" value="false"/>
+    	  <param name="self_diagnose" value="false"/>
+	  <!--remap from="odom" to="vo" /-->
+ 	  <!--remap from="/vo" to="/camera/odom/sample" /-->
+ 	</node>
+
+<?ignore
+  	<!-- The path_ekf_plotter node -->	
+  	<node name="path_ekf_plotter" type="path_ekf_plotter.py" pkg="odom_to_trajectory">
+  	</node>
+  
+  	<!-- The path_odom_plotter node -->
+  	<node name="path_odom_plotter" type="path_odom_plotter.py" pkg="odom_to_trajectory">
+  	</node>
+?>
+	<node pkg="rosbag" name="rosbag" type="record" output="screen" args="-O /home/minki/rosbag/sensor_fusion.bag /scan /imu_data /map /poseupdate /odom /mavros/local_position/pose /camera/odom/sample /robot_pose_ekf/odom_combined /tf" />
+  	<node pkg="rviz" type="rviz" name="rviz" args="-d /home/minki/rviz/rplidar_drone.rviz" />
+
+</launch>
+
+
+

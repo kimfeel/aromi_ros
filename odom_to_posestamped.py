@@ -26,7 +26,7 @@ def callback(data):
 
         pose.header.seq = data.header.seq + 1
         pose.header.frame_id = "camera_odom_frame"
-        pose.header.stamp = rospy.Time.now()
+        #pose.header.stamp = rospy.Time.now()
         pose.header.stamp = data.header.stamp
         
         pub.publish(pose)
@@ -37,10 +37,10 @@ if __name__ == '__main__':
         rospy.init_node('pose_publisher')
 
         pub = rospy.Publisher('/mavros/vision_pose/pose', PoseStamped, queue_size=1)
-        msg = Odometry()
+        #msg = Odometry()
 
         # Subscription to the required odom topic (edit accordingly)
-        msg = rospy.Subscriber('/camera/odom/sample', Odometry, callback)
+        rospy.Subscriber('/camera/odom/sample', Odometry, callback)
 
         rate = rospy.Rate(30)  # 30hz
 
